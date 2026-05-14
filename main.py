@@ -220,6 +220,30 @@ def check_jobs():
                 seen_jobs.add(job["id"])
                 new_jobs.append(job)
 
+        # Himalayas - free remote jobs
+    him_jobs = fetch_himalayas_jobs()
+    for job in him_jobs:
+        if job["id"] not in seen_jobs and is_good_match(job):
+            seen_jobs.add(job["id"])
+            new_jobs.append(job)
+
+    # Arbeitnow - visa sponsorship jobs
+    arb_jobs = fetch_arbeitnow_jobs()
+    for job in arb_jobs:
+        if job["id"] not in seen_jobs and is_good_match(job):
+            seen_jobs.add(job["id"])
+            job["visa_confirmed"] = True
+            new_jobs.append(job)
+
+    # Ashby companies
+    for company in ASHBY_COMPANIES:
+        ash_jobs = fetch_ashby_jobs(company)
+        for job in ash_jobs:
+            if job["id"] not in seen_jobs and is_good_match(job):
+                seen_jobs.add(job["id"])
+                new_jobs.append(job)
+        time.sleep(0.5)
+
     if new_jobs:
         # Send in batches of 5
         for i in range(0, len(new_jobs), 5):
@@ -242,15 +266,92 @@ def check_jobs():
     else:
         print("No new matching jobs found")
 
+def fetch_himalayas_jobs():
+    """Fetch remote jobs from Himalayas - completely free"""
+    try:
+        keywords = ["python", "backend", "data engineer", 
+                    "platform engineer", "software engineer", "ai engineer"]
+        jobs = []
+        for kw in keywords:
+            url = f"https://himalayas.app/jobs/api?q={kw}&limit=20"
+            response = requests.get(url, timeout=10)
+            data = response.json()
+            for job in data.get("jobs", []):
+                jobs.append({
+                    "title": job.get("title", ""),
+                    "location": "Remote - " + job.get("countries", ["USA"])[0] if job.get("countries") else "Remote",
+                    "url": job.get("applicationLink", ""),
+                    "company": job.get("company", {}).get("name", ""),
+                    "id": "him_" + str(job.get("slug", "")),
+                    "description": job.get("description", "")
+                })
+            time.sleep(1)
+        return jobs
+    except Exception as e:
+        print(f"Himalayas error: {e}")
+        return []
+
+def fetch_arbeitnow_jobs():
+    """Fetch jobs from Arbeitnow - free, has visa sponsorship filter"""
+    try:
+        url = "https://www.arbeitnow.com/api/job-board-api?visa_sponsorship=true"
+        response = requests.get(url, timeout=10)
+        data = response.json()
+        jobs = []
+        for job in data.get("data", []):
+            jobs.append({
+                "title": job.get("title", ""),
+                "location": job.get("location", "USA"),
+                "url": job.get("url", ""),
+                "company": job.get("company_name", ""),
+                "id": "arb_" + str(job.get("slug", "")),
+                "description": job.get("description", ""),
+                "visa": True
+            })
+        return jobs
+    except Exception as e:
+        print(f"Arbeitnow error: {e}")
+        return []
+
+def fetch_ashby_jobs(company):
+    """Fetch jobs from Ashby ATS"""
+    try:
+        url = f"https://api.ashbyhq.com/posting-api/job-board/{company}"
+        response = requests.get(url, timeout=10)
+        data = response.json()
+        jobs = []
+        for job in data.get("jobs", []):
+            jobs.append({
+                "title": job.get("title", ""),
+                "location": job.get("location", "USA"),
+                "url": job.get("jobUrl", ""),
+                "company": company,
+                "id": "ash_" + str(job.get("id", "")),
+                "description": job.get("descriptionHtml", "")
+            })
+        return jobs
+    except Exception as e:
+        print(f"Ashby {company} error: {e}")
+        return []
+
+# Ashby companies list
+ASHBY_COMPANIES = [
+    "linear", "vercel", "supabase", "retool",
+    "dbt-labs", "temporal", "posthog", "fly",
+    "loom", "mercury", "ramp", "deel"
+]
+
 # Startup message
 send_telegram(
     "🤖 <b>Job Alert Bot is Live!</b>\n\n"
     "Watching for:\n"
     "💼 Python, Backend, Data, Platform, AI/ML Engineer roles\n"
-    "📍 Anywhere in USA\n"
+    "📍 Anywhere in USA + Remote\n"
     "⏱ Experience: 0-3 years\n"
     "🛂 Visa sponsorship status included\n\n"
-    "Checking every hour. Good luck Chirudeep! 🚀"
+    "📡 Sources: Greenhouse, Lever, Ashby, Himalayas, Arbeitnow\n"
+    "🔄 Checking every hour automatically\n\n"
+    "Good luck Chirudeep! 🚀"
 )
 
 # Run immediately then every hour
