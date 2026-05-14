@@ -163,6 +163,7 @@ def fetch_lever_jobs(url):
 
 def is_good_match(job):
     title_lower = job["title"].lower()
+    location_lower = job.get("location", "").lower()
 
     # Exclude senior/management roles
     for word in EXCLUDE_KEYWORDS[:6]:
@@ -174,11 +175,24 @@ def is_good_match(job):
     if not keyword_match:
         return False
 
+    # USA location filter
+    non_usa = [
+        "uk", "united kingdom", "london", "europe", "germany",
+        "france", "canada", "australia", "india", "singapore",
+        "netherlands", "spain", "italy", "brazil", "mexico",
+        "japan", "china", "korea", "berlin", "amsterdam",
+        "toronto", "sydney", "dublin", "paris", "remote - eu",
+        "remote - europe", "remote - uk", "remote - canada"
+    ]
+    
+    # If location is specified and clearly non-USA, skip it
+    if location_lower and any(loc in location_lower for loc in non_usa):
+        return False
+
     # Check experience level in description
     desc_lower = job.get("description", "").lower()
     has_high_exp = any(f"{i}+ years" in desc_lower for i in range(4, 15))
     if has_high_exp:
-        # Allow only if entry level keywords present
         has_entry = any(kw in desc_lower for kw in EXPERIENCE_KEYWORDS)
         if not has_entry:
             return False
