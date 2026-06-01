@@ -178,33 +178,21 @@ def check_experience(text):
 
 def fetch_greenhouse_jobs(url):
     try:
-        response = requests.get(url, timeout=10)
+        # Try new API format first
+        company = url.split("/")[4].replace("/jobs.json", "")
+        new_url = f"https://boards-api.greenhouse.io/v1/boards/{company}/jobs?content=true"
+        response = requests.get(new_url, timeout=10)
+        response.raise_for_status()
         data = response.json()
         jobs = []
-        company = url.split("/")[4]
         for job in data.get("jobs", []):
-            title = job.get("title", "")
-            location = job.get("location", {}).get("name", "")
-            job_url = job.get("absolute_url", "")
-            
-            # Get full job description for visa check
-            description = ""
-            try:
-                detail = requests.get(
-                    f"https://boards-api.greenhouse.io/v1/boards/{company}/jobs/{job.get('id')}",
-                    timeout=5
-                )
-                description = detail.json().get("content", "")
-            except:
-                pass
-
             jobs.append({
-                "title": title,
-                "location": location,
-                "url": job_url,
+                "title": job.get("title", ""),
+                "location": job.get("location", {}).get("name", "") if isinstance(job.get("location"), dict) else str(job.get("location", "")),
+                "url": job.get("absolute_url", ""),
                 "company": company,
                 "id": str(job.get("id", "")),
-                "description": description
+                "description": job.get("content", "")
             })
         return jobs
     except Exception as e:
@@ -214,19 +202,30 @@ def fetch_greenhouse_jobs(url):
 def fetch_lever_jobs(url):
     try:
         response = requests.get(url, timeout=10)
+        response.raise_for_status()
         data = response.json()
         jobs = []
-        company = url.split("/")[5]
+        company = url.split("/")[5].split("?")[0]
+        
+        # Lever returns a list directly
+        if not isinstance(data, list):
+            return []
+            
         for job in data:
+            if not isinstance(job, dict):
+                continue
             categories = job.get("categories", {})
-            location = categories.get("location", "")
-            description = job.get("descriptionPlain", "") + job.get("additionalPlain", "")
+            if isinstance(categories, dict):
+                location = categories.get("location", "")
+            else:
+                location = ""
+            description = job.get("descriptionPlain", "") or job.get("description", "")
             jobs.append({
                 "title": job.get("text", ""),
                 "location": location,
                 "url": job.get("hostedUrl", ""),
                 "company": company,
-                "id": job.get("id", ""),
+                "id": "lever_" + str(job.get("id", "")),
                 "description": description
             })
         return jobs
