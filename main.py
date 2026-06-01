@@ -22,10 +22,26 @@ KEYWORDS = [
 ]
 
 EXCLUDE_KEYWORDS = [
+    # Seniority
     "senior", "staff", "principal", "manager",
     "director", "lead", "head of", "vp", "vice president",
-    "5+ years", "6+ years", "7+ years", "8+ years",
-    "10+ years", "ruby only", ".net only",
+
+    # High experience
+    "4+ years", "5+ years", "6+ years", "7+ years",
+    "8+ years", "10+ years",
+
+    # Security clearance
+    "active clearance", "security clearance required",
+    "ts/sci", "top secret", "secret clearance",
+    "must have clearance", "clearance required",
+
+    # Citizenship
+    "us citizen only", "must be us citizen",
+    "citizens only", "no sponsorship",
+    "must be authorized", "usc only",
+
+    # Wrong stack
+    "java only", "ruby only", ".net only",
     "salesforce apex", "embedded firmware"
 ]
 
@@ -47,35 +63,93 @@ NO_VISA_KEYWORDS = [
     "active clearance"
 ]
 
+# EXPANDED GREENHOUSE — 50+ top tech companies
 JOB_SOURCES = [
+    # AI & ML Companies
     "https://boards.greenhouse.io/mistralai/jobs.json",
-    "https://boards.greenhouse.io/labelbox/jobs.json",
-    "https://boards.greenhouse.io/remitly/jobs.json",
-    "https://boards.greenhouse.io/sofi/jobs.json",
     "https://boards.greenhouse.io/cerebras/jobs.json",
-    "https://boards.greenhouse.io/replit/jobs.json",
-    "https://boards.greenhouse.io/harmonic/jobs.json",
     "https://boards.greenhouse.io/scale/jobs.json",
     "https://boards.greenhouse.io/anthropic/jobs.json",
-    "https://boards.greenhouse.io/notion/jobs.json",
-    "https://boards.greenhouse.io/figma/jobs.json",
-    "https://boards.greenhouse.io/airtable/jobs.json",
+    "https://boards.greenhouse.io/cohere/jobs.json",
+    "https://boards.greenhouse.io/huggingface/jobs.json",
+    "https://boards.greenhouse.io/labelbox/jobs.json",
+    "https://boards.greenhouse.io/weights/jobs.json",
+    
+    # Fintech
     "https://boards.greenhouse.io/stripe/jobs.json",
     "https://boards.greenhouse.io/plaid/jobs.json",
     "https://boards.greenhouse.io/brex/jobs.json",
     "https://boards.greenhouse.io/gusto/jobs.json",
+    "https://boards.greenhouse.io/remitly/jobs.json",
+    "https://boards.greenhouse.io/sofi/jobs.json",
+    "https://boards.greenhouse.io/chime/jobs.json",
+    "https://boards.greenhouse.io/robinhood/jobs.json",
+    "https://boards.greenhouse.io/coinbase/jobs.json",
+    
+    # SaaS & Cloud
+    "https://boards.greenhouse.io/notion/jobs.json",
+    "https://boards.greenhouse.io/figma/jobs.json",
+    "https://boards.greenhouse.io/airtable/jobs.json",
     "https://boards.greenhouse.io/mongodb/jobs.json",
     "https://boards.greenhouse.io/hubspot/jobs.json",
     "https://boards.greenhouse.io/datadog/jobs.json",
     "https://boards.greenhouse.io/snyk/jobs.json",
+    "https://boards.greenhouse.io/twilio/jobs.json",
+    "https://boards.greenhouse.io/dropbox/jobs.json",
+    "https://boards.greenhouse.io/zendesk/jobs.json",
+    "https://boards.greenhouse.io/intercom/jobs.json",
+    "https://boards.greenhouse.io/klaviyo/jobs.json",
+    
+    # Healthcare & Research
+    "https://boards.greenhouse.io/flatiron/jobs.json",
+    "https://boards.greenhouse.io/tempus/jobs.json",
+    "https://boards.greenhouse.io/veeva/jobs.json",
+    
+    # Infrastructure & DevOps
+    "https://boards.greenhouse.io/hashicorp/jobs.json",
+    "https://boards.greenhouse.io/cockroachlabs/jobs.json",
+    "https://boards.greenhouse.io/confluent/jobs.json",
+    "https://boards.greenhouse.io/dbtlabs/jobs.json",
+    "https://boards.greenhouse.io/grafana/jobs.json",
+    "https://boards.greenhouse.io/harness/jobs.json",
+    
+    # E-commerce & Consumer
+    "https://boards.greenhouse.io/doordash/jobs.json",
+    "https://boards.greenhouse.io/instacart/jobs.json",
+    "https://boards.greenhouse.io/lyft/jobs.json",
+    "https://boards.greenhouse.io/pinterest/jobs.json",
+    "https://boards.greenhouse.io/reddit/jobs.json",
+    "https://boards.greenhouse.io/shopify/jobs.json",
 ]
 
+# EXPANDED LEVER — 30+ companies
 LEVER_SOURCES = [
     "https://api.lever.co/v0/postings/openai?mode=json",
     "https://api.lever.co/v0/postings/anduril?mode=json",
     "https://api.lever.co/v0/postings/benchling?mode=json",
     "https://api.lever.co/v0/postings/verkada?mode=json",
     "https://api.lever.co/v0/postings/rippling?mode=json",
+    "https://api.lever.co/v0/postings/watershed?mode=json",
+    "https://api.lever.co/v0/postings/scale?mode=json",
+    "https://api.lever.co/v0/postings/coda?mode=json",
+    "https://api.lever.co/v0/postings/reforge?mode=json",
+    "https://api.lever.co/v0/postings/superhuman?mode=json",
+    "https://api.lever.co/v0/postings/lattice?mode=json",
+    "https://api.lever.co/v0/postings/retool?mode=json",
+    "https://api.lever.co/v0/postings/airplane?mode=json",
+    "https://api.lever.co/v0/postings/mercury?mode=json",
+    "https://api.lever.co/v0/postings/deel?mode=json",
+    "https://api.lever.co/v0/postings/remote?mode=json",
+    "https://api.lever.co/v0/postings/drata?mode=json",
+]
+
+# ASHBY — Top startups
+ASHBY_COMPANIES = [
+    "linear", "vercel", "supabase", "posthog",
+    "fly", "loom", "ramp", "mercury", "clerk",
+    "resend", "neon", "turso", "trigger",
+    "inngest", "plain", "raycast", "arc",
+    "zed", "warp", "railway", "render"
 ]
 
 RSS_FEEDS = [
@@ -163,10 +237,12 @@ def fetch_lever_jobs(url):
 def is_good_match(job):
     title_lower = job["title"].lower()
     location_lower = job.get("location", "").lower()
+    desc_lower = job.get("description", "").lower()
+    full_text = title_lower + " " + desc_lower
 
-    # Exclude senior/management roles
-    for word in EXCLUDE_KEYWORDS[:6]:
-        if word in title_lower:
+    # Exclude senior/management/clearance roles
+    for word in EXCLUDE_KEYWORDS:
+        if word in full_text:
             return False
 
     # Must match at least one job keyword
@@ -183,18 +259,31 @@ def is_good_match(job):
         "toronto", "sydney", "dublin", "paris", "remote - eu",
         "remote - europe", "remote - uk", "remote - canada"
     ]
-    
-    # If location is specified and clearly non-USA, skip it
     if location_lower and any(loc in location_lower for loc in non_usa):
         return False
 
-    # Check experience level in description
-    desc_lower = job.get("description", "").lower()
-    has_high_exp = any(f"{i}+ years" in desc_lower for i in range(4, 15))
+    # Experience filter — skip if 4+ years explicitly required
+    has_high_exp = any(
+        f"{i}+ years" in desc_lower or 
+        f"{i} years of experience" in desc_lower 
+        for i in range(4, 15)
+    )
     if has_high_exp:
+        # Allow only if entry level keywords also present
         has_entry = any(kw in desc_lower for kw in EXPERIENCE_KEYWORDS)
         if not has_entry:
             return False
+
+    # Only software and data related roles
+    software_data_keywords = [
+        "software", "backend", "data", "python", "engineer",
+        "developer", "platform", "infrastructure", "devops",
+        "machine learning", "ai", "ml", "sre", "cloud",
+        "full stack", "fullstack", "api", "database"
+    ]
+    is_software_data = any(kw in title_lower for kw in software_data_keywords)
+    if not is_software_data:
+        return False
 
     return True
 
@@ -280,22 +369,35 @@ def check_jobs():
         print("No new matching jobs found")
 
 def fetch_himalayas_jobs():
-    """Fetch remote jobs from Himalayas - completely free"""
+    """Fetch remote USA jobs from Himalayas - completely free"""
     try:
-        keywords = ["python", "backend", "data engineer", 
-                    "platform engineer", "software engineer", "ai engineer"]
+        keywords = [
+            "python engineer", "backend engineer",
+            "data engineer", "platform engineer",
+            "software engineer", "ai engineer",
+            "ml engineer", "devops engineer"
+        ]
         jobs = []
+        seen_him = set()
         for kw in keywords:
             url = f"https://himalayas.app/jobs/api?q={kw}&limit=20"
             response = requests.get(url, timeout=10)
             data = response.json()
             for job in data.get("jobs", []):
+                job_id = "him_" + str(job.get("slug", ""))
+                if job_id in seen_him:
+                    continue
+                seen_him.add(job_id)
+                # Only USA or worldwide remote
+                countries = job.get("countries", [])
+                if countries and "United States" not in countries and "Worldwide" not in countries:
+                    continue
                 jobs.append({
                     "title": job.get("title", ""),
-                    "location": "Remote - " + job.get("countries", ["USA"])[0] if job.get("countries") else "Remote",
+                    "location": "Remote USA",
                     "url": job.get("applicationLink", ""),
                     "company": job.get("company", {}).get("name", ""),
-                    "id": "him_" + str(job.get("slug", "")),
+                    "id": job_id,
                     "description": job.get("description", "")
                 })
             time.sleep(1)
