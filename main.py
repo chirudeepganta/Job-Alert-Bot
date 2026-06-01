@@ -66,60 +66,100 @@ NO_VISA_KEYWORDS = [
 # EXPANDED GREENHOUSE — 50+ top tech companies
 JOB_SOURCES = [
     # AI & ML Companies
-    "https://boards.greenhouse.io/mistralai/jobs.json",
-    "https://boards.greenhouse.io/cerebras/jobs.json",
-    "https://boards.greenhouse.io/scale/jobs.json",
-    "https://boards.greenhouse.io/anthropic/jobs.json",
-    "https://boards.greenhouse.io/cohere/jobs.json",
-    "https://boards.greenhouse.io/huggingface/jobs.json",
-    "https://boards.greenhouse.io/labelbox/jobs.json",
-    "https://boards.greenhouse.io/weights/jobs.json",
-    
+    "https://boards-api.greenhouse.io/v1/boards/mistralai/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/cerebras/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/anthropic/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/cohere/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/huggingface/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/labelbox/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/scale/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/weights/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/together/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/perplexity/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/adept/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/inflection/jobs",
+
     # Fintech
-    "https://boards.greenhouse.io/stripe/jobs.json",
-    "https://boards.greenhouse.io/plaid/jobs.json",
-    "https://boards.greenhouse.io/brex/jobs.json",
-    "https://boards.greenhouse.io/gusto/jobs.json",
-    "https://boards.greenhouse.io/remitly/jobs.json",
-    "https://boards.greenhouse.io/sofi/jobs.json",
-    "https://boards.greenhouse.io/chime/jobs.json",
-    "https://boards.greenhouse.io/robinhood/jobs.json",
-    "https://boards.greenhouse.io/coinbase/jobs.json",
-    
+    "https://boards-api.greenhouse.io/v1/boards/stripe/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/plaid/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/brex/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/gusto/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/remitly/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/sofi/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/chime/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/robinhood/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/coinbase/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/affirm/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/marqeta/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/klarna/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/kraken/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/wealthfront/jobs",
+
     # SaaS & Cloud
-    "https://boards.greenhouse.io/notion/jobs.json",
-    "https://boards.greenhouse.io/figma/jobs.json",
-    "https://boards.greenhouse.io/airtable/jobs.json",
-    "https://boards.greenhouse.io/mongodb/jobs.json",
-    "https://boards.greenhouse.io/hubspot/jobs.json",
-    "https://boards.greenhouse.io/datadog/jobs.json",
-    "https://boards.greenhouse.io/snyk/jobs.json",
-    "https://boards.greenhouse.io/twilio/jobs.json",
-    "https://boards.greenhouse.io/dropbox/jobs.json",
-    "https://boards.greenhouse.io/zendesk/jobs.json",
-    "https://boards.greenhouse.io/intercom/jobs.json",
-    "https://boards.greenhouse.io/klaviyo/jobs.json",
-    
+    "https://boards-api.greenhouse.io/v1/boards/notion/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/figma/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/airtable/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/mongodb/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/hubspot/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/datadog/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/snyk/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/twilio/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/dropbox/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/zendesk/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/intercom/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/klaviyo/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/segment/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/mixpanel/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/amplitude/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/heap/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/pendo/jobs",
+
     # Healthcare & Research
-    "https://boards.greenhouse.io/flatiron/jobs.json",
-    "https://boards.greenhouse.io/tempus/jobs.json",
-    "https://boards.greenhouse.io/veeva/jobs.json",
-    
+    "https://boards-api.greenhouse.io/v1/boards/flatiron/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/tempus/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/veeva/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/modernhealth/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/carrum/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/headway/jobs",
+
     # Infrastructure & DevOps
-    "https://boards.greenhouse.io/hashicorp/jobs.json",
-    "https://boards.greenhouse.io/cockroachlabs/jobs.json",
-    "https://boards.greenhouse.io/confluent/jobs.json",
-    "https://boards.greenhouse.io/dbtlabs/jobs.json",
-    "https://boards.greenhouse.io/grafana/jobs.json",
-    "https://boards.greenhouse.io/harness/jobs.json",
-    
+    "https://boards-api.greenhouse.io/v1/boards/hashicorp/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/cockroachlabs/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/confluent/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/dbtlabs/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/grafana/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/harness/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/sentry/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/launchdarkly/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/circleci/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/fastly/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/cloudflare/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/newrelic/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/sumo/jobs",
+
     # E-commerce & Consumer
-    "https://boards.greenhouse.io/doordash/jobs.json",
-    "https://boards.greenhouse.io/instacart/jobs.json",
-    "https://boards.greenhouse.io/lyft/jobs.json",
-    "https://boards.greenhouse.io/pinterest/jobs.json",
-    "https://boards.greenhouse.io/reddit/jobs.json",
-    "https://boards.greenhouse.io/shopify/jobs.json",
+    "https://boards-api.greenhouse.io/v1/boards/doordash/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/instacart/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/lyft/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/pinterest/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/reddit/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/shopify/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/etsy/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/wayfair/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/grubhub/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/poshmark/jobs",
+
+    # Enterprise & Other
+    "https://boards-api.greenhouse.io/v1/boards/squarespace/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/duolingo/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/coursera/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/chegg/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/procore/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/thumbtack/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/carta/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/rippling/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/lattice/jobs",
+    "https://boards-api.greenhouse.io/v1/boards/culture/jobs",
 ]
 
 # EXPANDED LEVER — 30+ companies
@@ -157,7 +197,30 @@ RSS_FEEDS = [
     "https://remotive.com/api/remote-jobs/rss?category=software-dev",
 ]
 
-seen_jobs = set()
+SEEN_JOBS_FILE = "seen_jobs.txt"
+
+def load_seen_jobs():
+    try:
+        with open(SEEN_JOBS_FILE, "r") as f:
+            content = f.read().strip()
+            if not content:
+                return set()
+            return set(content.splitlines())
+    except FileNotFoundError:
+        return set()
+    except Exception as e:
+        print(f"Error loading seen jobs: {e}")
+        return set()
+
+def save_seen_jobs(seen):
+    try:
+        with open(SEEN_JOBS_FILE, "w") as f:
+            f.write("\n".join(seen))
+        print(f"Saved {len(seen)} seen job IDs")
+    except Exception as e:
+        print(f"Error saving seen jobs: {e}")
+
+seen_jobs = load_seen_jobs()
 
 def check_visa_status(text):
     text_lower = text.lower()
@@ -178,17 +241,17 @@ def check_experience(text):
 
 def fetch_greenhouse_jobs(url):
     try:
-        # Try new API format first
-        company = url.split("/")[4].replace("/jobs.json", "")
-        new_url = f"https://boards-api.greenhouse.io/v1/boards/{company}/jobs?content=true"
-        response = requests.get(new_url, timeout=10)
+        response = requests.get(url + "?content=true", timeout=10)
         response.raise_for_status()
         data = response.json()
+        company = url.split("/boards/")[1].split("/")[0]
         jobs = []
         for job in data.get("jobs", []):
+            location = job.get("location", {})
+            location_name = location.get("name", "") if isinstance(location, dict) else str(location)
             jobs.append({
                 "title": job.get("title", ""),
-                "location": job.get("location", {}).get("name", "") if isinstance(job.get("location"), dict) else str(job.get("location", "")),
+                "location": location_name,
                 "url": job.get("absolute_url", ""),
                 "company": company,
                 "id": str(job.get("id", "")),
@@ -363,6 +426,7 @@ def check_jobs():
             send_telegram(message)
             time.sleep(1)
 
+        save_seen_jobs(seen_jobs)
         print(f"Sent {len(new_jobs)} new jobs to Telegram")
     else:
         print("No new matching jobs found")
