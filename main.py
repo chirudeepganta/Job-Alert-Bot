@@ -1,6 +1,5 @@
 import requests
 import feedparser
-import schedule
 import time
 import os
 from datetime import datetime
@@ -355,23 +354,8 @@ ASHBY_COMPANIES = [
     "loom", "mercury", "ramp", "deel"
 ]
 
-# Startup message
-send_telegram(
-    "🤖 <b>Job Alert Bot is Live!</b>\n\n"
-    "Watching for:\n"
-    "💼 Python, Backend, Data, Platform, AI/ML Engineer roles\n"
-    "📍 Anywhere in USA + Remote\n"
-    "⏱ Experience: 0-3 years\n"
-    "🛂 Visa sponsorship status included\n\n"
-    "📡 Sources: Greenhouse, Lever, Ashby, Himalayas, Arbeitnow\n"
-    "🔄 Checking every hour automatically\n\n"
-    "Good luck Chirudeep! 🚀"
-)
-
-# Run immediately then every hour
+# Run once - GitHub Actions handles scheduling
+print(f"Starting job check at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 check_jobs()
-schedule.every(1).hours.do(check_jobs)
+print(f"Job check complete at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
-while True:
-    schedule.run_pending()
-    time.sleep(60)
