@@ -30,7 +30,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python main.py
 
-      - - name: Save seen jobs back to repo
+      - name: Save seen jobs back to repo
         run: |
           git config --global user.name "Job Bot"
           git config --global user.email "bot@jobbot.com"
