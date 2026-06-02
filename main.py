@@ -68,7 +68,6 @@ JOB_SOURCES = [
     # AI & ML — verified on Greenhouse
     "anthropic",
     "labelbox",
-    "huggingface",
 
     # Fintech — verified
     "stripe",
@@ -117,19 +116,26 @@ JOB_SOURCES = [
 # EXPANDED LEVER — 30+ companies
 LEVER_SOURCES = [
     "https://api.lever.co/v0/postings/netflix?mode=json",
-    "https://api.lever.co/v0/postings/twitter?mode=json",
-    "https://api.lever.co/v0/postings/box?mode=json",
-    "https://api.lever.co/v0/postings/eventbrite?mode=json",
-    "https://api.lever.co/v0/postings/yelp?mode=json",
+    "https://api.lever.co/v0/postings/spotify?mode=json",
+    "https://api.lever.co/v0/postings/cloudera?mode=json",
 ]
 
 # ASHBY — Top startups
 ASHBY_COMPANIES = [
-    "linear", "vercel", "supabase", "posthog",
-    "fly", "loom", "ramp", "mercury", "clerk",
-    "resend", "neon", "turso", "trigger",
-    "inngest", "plain", "raycast", "arc",
-    "zed", "warp", "railway", "render"
+    "ramp",
+    "linear",
+    "vercel",
+    "supabase",
+    "posthog",
+    "loom",
+    "mercury",
+    "clerk",
+    "resend",
+    "neon",
+    "plain",
+    "raycast",
+    "zed",
+    "warp",
 ]
 
 RSS_FEEDS = [
