@@ -327,21 +327,6 @@ def check_jobs():
                 seen_jobs.add(job["id"])
                 new_jobs.append(job)
 
-        # Himalayas - free remote jobs
-    him_jobs = fetch_himalayas_jobs()
-    for job in him_jobs:
-        if job["id"] not in seen_jobs and is_good_match(job):
-            seen_jobs.add(job["id"])
-            new_jobs.append(job)
-
-    # Arbeitnow - visa sponsorship jobs
-    arb_jobs = fetch_arbeitnow_jobs()
-    for job in arb_jobs:
-        if job["id"] not in seen_jobs and is_good_match(job):
-            seen_jobs.add(job["id"])
-            job["visa_confirmed"] = True
-            new_jobs.append(job)
-
     # Ashby companies
     for company in ASHBY_COMPANIES:
         ash_jobs = fetch_ashby_jobs(company)
@@ -349,17 +334,41 @@ def check_jobs():
             if job["id"] not in seen_jobs and is_good_match(job):
                 seen_jobs.add(job["id"])
                 new_jobs.append(job)
-        time.sleep(0.5)
+        time.sleep(0.5)  # ✅ correct place — between each company
+
+    # Himalayas — remote USA jobs from small companies
+    him_jobs = fetch_himalayas_jobs()
+    for job in him_jobs:
+        if job["id"] not in seen_jobs and is_good_match(job):
+            seen_jobs.add(job["id"])
+            new_jobs.append(job)
+
+    # Arbeitnow — visa sponsorship jobs
+    arb_jobs = fetch_arbeitnow_jobs()
+    for job in arb_jobs:
+        if job["id"] not in seen_jobs and is_good_match(job):
+            seen_jobs.add(job["id"])
+            job["visa_confirmed"] = True
+            new_jobs.append(job)
+
+    # RSS feeds — small niche companies
+    rss_jobs = fetch_rss_jobs()
+    for job in rss_jobs:
+        if job["id"] not in seen_jobs and is_good_match(job):
+            seen_jobs.add(job["id"])
+            new_jobs.append(job)
 
     if new_jobs:
-        # Send in batches of 5
         for i in range(0, len(new_jobs), 5):
             batch = new_jobs[i:i+5]
             message = f"🚀 <b>{len(new_jobs)} New Job Match(es) Found!</b>\n"
             message += f"🕐 {datetime.now().strftime('%b %d, %I:%M %p')}\n\n"
 
             for job in batch:
-                visa = check_visa_status(job.get("description", "") + job["title"])
+                if job.get("visa_confirmed"):
+                    visa = "✅ Visa Sponsorship Confirmed"
+                else:
+                    visa = check_visa_status(job.get("description", "") + job["title"])
                 message += f"🏢 <b>{job['company'].upper()}</b>\n"
                 message += f"💼 {job['title']}\n"
                 message += f"📍 {job['location'] or 'USA'}\n"
@@ -375,17 +384,15 @@ def check_jobs():
         print("No new matching jobs found")
 
 def fetch_himalayas_jobs():
-    """Fetch remote USA jobs from Himalayas - completely free"""
-    try:
-        keywords = [
-            "python engineer", "backend engineer",
-            "data engineer", "platform engineer",
-            "software engineer", "ai engineer",
-            "ml engineer", "devops engineer"
-        ]
-        jobs = []
-        seen_him = set()
-        for kw in keywords:
+    keywords = [
+        "python", "backend", "data engineer",
+        "software engineer", "platform engineer",
+        "ai engineer", "devops"
+    ]
+    jobs = []
+    seen_him = set()
+    for kw in keywords:
+        try:
             url = f"https://himalayas.app/jobs/api?q={kw}&limit=20"
             response = requests.get(url, timeout=10)
             data = response.json()
@@ -394,7 +401,6 @@ def fetch_himalayas_jobs():
                 if job_id in seen_him:
                     continue
                 seen_him.add(job_id)
-                # Only USA or worldwide remote
                 countries = job.get("countries", [])
                 if countries and "United States" not in countries and "Worldwide" not in countries:
                     continue
@@ -402,32 +408,34 @@ def fetch_himalayas_jobs():
                     "title": job.get("title", ""),
                     "location": "Remote USA",
                     "url": job.get("applicationLink", ""),
-                    "company": job.get("company", {}).get("name", ""),
+                    "company": job.get("company", {}).get("name", "Unknown"),
                     "id": job_id,
                     "description": job.get("description", "")
                 })
             time.sleep(1)
-        return jobs
-    except Exception as e:
-        print(f"Himalayas error: {e}")
-        return []
+        except Exception as e:
+            print(f"Himalayas error: {e}")
+    return jobs
 
 def fetch_arbeitnow_jobs():
-    """Fetch jobs from Arbeitnow - free, has visa sponsorship filter"""
     try:
-        url = "https://www.arbeitnow.com/api/job-board-api?visa_sponsorship=true"
+        url = "https://www.arbeitnow.com/api/job-board-api"
         response = requests.get(url, timeout=10)
         data = response.json()
         jobs = []
         for job in data.get("data", []):
+            # Only USA jobs
+            location = job.get("location", "")
+            if location and any(loc in location.lower() for loc in ["uk", "europe", "germany", "canada"]):
+                continue
             jobs.append({
                 "title": job.get("title", ""),
-                "location": job.get("location", "USA"),
+                "location": location or "USA",
                 "url": job.get("url", ""),
                 "company": job.get("company_name", ""),
                 "id": "arb_" + str(job.get("slug", "")),
                 "description": job.get("description", ""),
-                "visa": True
+                "visa_confirmed": job.get("visa_sponsorship", False)
             })
         return jobs
     except Exception as e:
@@ -454,6 +462,39 @@ def fetch_ashby_jobs(company):
     except Exception as e:
         print(f"Ashby {company} error: {e}")
         return []
+
+def fetch_rss_jobs():
+    """Fetch from RSS feeds covering thousands of small companies"""
+    feeds = [
+        # Remote OK — thousands of small tech companies
+        "https://remoteok.com/remote-python-jobs.rss",
+        "https://remoteok.com/remote-backend-jobs.rss",
+        "https://remoteok.com/remote-data-engineer-jobs.rss",
+        "https://remoteok.com/remote-software-engineer-jobs.rss",
+        
+        # Remotive — curated tech roles
+        "https://remotive.com/api/remote-jobs/rss?category=software-dev",
+        "https://remotive.com/api/remote-jobs/rss?category=data",
+    ]
+    
+    jobs = []
+    for feed_url in feeds:
+        try:
+            feed = feedparser.parse(feed_url)
+            for entry in feed.entries[:20]:
+                job_id = "rss_" + str(hash(entry.get("link", "")))
+                jobs.append({
+                    "title": entry.get("title", ""),
+                    "location": entry.get("location", "Remote USA"),
+                    "url": entry.get("link", ""),
+                    "company": entry.get("author", "Unknown"),
+                    "id": job_id,
+                    "description": entry.get("summary", "")
+                })
+            time.sleep(1)
+        except Exception as e:
+            print(f"RSS error {feed_url}: {e}")
+    return jobs
 
 # Ashby companies list
 ASHBY_COMPANIES = [
