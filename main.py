@@ -172,9 +172,8 @@ def check_experience(text):
     return True
 
 def fetch_greenhouse_jobs(company_slug):
-    """Fetch jobs using correct Greenhouse URL format"""
     try:
-        url = f"https://boards.greenhouse.io/{company_slug}/jobs.json"
+        url = f"https://api.greenhouse.io/v1/boards/{company_slug}/jobs?content=true"
         headers = {"User-Agent": "Mozilla/5.0"}
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
@@ -198,24 +197,20 @@ def fetch_greenhouse_jobs(company_slug):
 
 def fetch_lever_jobs(url):
     try:
-        response = requests.get(url, timeout=10)
+        # Lever correct format
+        company = url.split("/postings/")[1].split("?")[0]
+        correct_url = f"https://api.lever.co/v0/postings/{company}?mode=json"
+        response = requests.get(correct_url, timeout=10)
         response.raise_for_status()
         data = response.json()
         jobs = []
-        company = url.split("/")[5].split("?")[0]
-        
-        # Lever returns a list directly
         if not isinstance(data, list):
             return []
-            
         for job in data:
             if not isinstance(job, dict):
                 continue
             categories = job.get("categories", {})
-            if isinstance(categories, dict):
-                location = categories.get("location", "")
-            else:
-                location = ""
+            location = categories.get("location", "") if isinstance(categories, dict) else ""
             description = job.get("descriptionPlain", "") or job.get("description", "")
             jobs.append({
                 "title": job.get("text", ""),
