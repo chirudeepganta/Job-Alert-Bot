@@ -65,54 +65,62 @@ NO_VISA_KEYWORDS = [
 
 # EXPANDED GREENHOUSE — 50+ top tech companies
 JOB_SOURCES = [
-    # AI & ML
-    "anthropic", "mistralai", "cerebras", "labelbox",
-    "scale", "cohere", "perplexity",
+    # AI & ML — verified on Greenhouse
+    "anthropic",
+    "labelbox",
+    "huggingface",
 
-    # Fintech
-    "stripe", "coinbase", "robinhood", "brex",
-    "gusto", "sofi", "chime", "affirm",
-    "marqeta", "remitly",
+    # Fintech — verified
+    "stripe",
+    "brex",
+    "gusto",
+    "sofi",
+    "chime",
+    "affirm",
+    "marqeta",
+    "robinhood",
 
-    # SaaS & Cloud
-    "figma", "airtable", "mongodb", "hubspot",
-    "datadog", "twilio", "dropbox", "klaviyo",
-    "intercom", "amplitude", "mixpanel",
+    # SaaS & Cloud — verified
+    "figma",
+    "airtable",
+    "mongodb",
+    "hubspot",
+    "datadog",
+    "twilio",
+    "dropbox",
+    "klaviyo",
+    "intercom",
+    "amplitude",
+    "mixpanel",
+    "squarespace",
+    "duolingo",
+    "coursera",
 
-    # Infrastructure & DevOps
-    "cockroachlabs", "confluent", "grafana",
-    "harness", "launchdarkly", "fastly",
-    "cloudflare", "newrelic", "sentry",
+    # Infrastructure
+    "cockroachlabs",
+    "launchdarkly",
+    "fastly",
+    "newrelic",
 
     # E-commerce & Consumer
-    "doordash", "lyft", "pinterest",
-    "reddit", "poshmark", "instacart",
+    "lyft",
+    "pinterest",
+    "reddit",
+    "instacart",
+    "poshmark",
 
-    # Enterprise & Other
-    "squarespace", "duolingo", "coursera",
-    "procore", "carta", "rippling",
-    "lattice", "thumbtack",
+    # Enterprise
+    "carta",
+    "lattice",
 ]
 
 # EXPANDED LEVER — 30+ companies
 LEVER_SOURCES = [
-    "https://api.lever.co/v0/postings/openai?mode=json",
-    "https://api.lever.co/v0/postings/anduril?mode=json",
-    "https://api.lever.co/v0/postings/benchling?mode=json",
-    "https://api.lever.co/v0/postings/verkada?mode=json",
-    "https://api.lever.co/v0/postings/rippling?mode=json",
-    "https://api.lever.co/v0/postings/watershed?mode=json",
-    "https://api.lever.co/v0/postings/scale?mode=json",
-    "https://api.lever.co/v0/postings/coda?mode=json",
-    "https://api.lever.co/v0/postings/reforge?mode=json",
-    "https://api.lever.co/v0/postings/superhuman?mode=json",
-    "https://api.lever.co/v0/postings/lattice?mode=json",
-    "https://api.lever.co/v0/postings/retool?mode=json",
-    "https://api.lever.co/v0/postings/airplane?mode=json",
-    "https://api.lever.co/v0/postings/mercury?mode=json",
-    "https://api.lever.co/v0/postings/deel?mode=json",
-    "https://api.lever.co/v0/postings/remote?mode=json",
-    "https://api.lever.co/v0/postings/drata?mode=json",
+    "https://api.lever.co/v0/postings/netflix?mode=json",
+    "https://api.lever.co/v0/postings/twitter?mode=json",
+    "https://api.lever.co/v0/postings/box?mode=json",
+    "https://api.lever.co/v0/postings/eventbrite?mode=json",
+    "https://api.lever.co/v0/postings/yelp?mode=json",
 ]
 
 # ASHBY — Top startups
@@ -173,7 +181,7 @@ def check_experience(text):
 
 def fetch_greenhouse_jobs(company_slug):
     try:
-        url = f"https://api.greenhouse.io/v1/boards/{company_slug}/jobs?content=true"
+        url = f"https://boards-api.greenhouse.io/v1/boards/{company_slug}/jobs?content=true"
         headers = {"User-Agent": "Mozilla/5.0"}
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
